@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { TenantSwitcher } from "@components/TenantSwitcher";
 import { TimeRangePicker } from "@components/TimeRangePicker";
@@ -15,7 +15,7 @@ import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
 import { channelMix, dailyLatency, dailyRequestsApprovals, filterByTenantAndRange, computeCategoryKpis, funnelCounts } from "@lib/aggregations";
 
-export function CommandCenter() {
+function CommandCenterContent() {
   const searchParams = useSearchParams();
   const tenant = searchParams.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
   const range = (searchParams.get("range") ?? "14d") as RangeId;
@@ -136,6 +136,14 @@ export function CommandCenter() {
         </div>
       </section>
     </div>
+  );
+}
+
+export function CommandCenter() {
+  return (
+    <Suspense fallback={<div className="text-sm text-gray-500">Loading dashboard...</div>}>
+      <CommandCenterContent />
+    </Suspense>
   );
 }
 

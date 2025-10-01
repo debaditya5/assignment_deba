@@ -12,7 +12,7 @@ import { ErrorsTable } from "@components/ErrorsTable";
 import { ErrorIndexBox } from "@components/ErrorIndexBox";
 import { LineCard } from "@components/LineCard";
 
-function ReliabilityPage() {
+function ReliabilityPageContent() {
   const params = useSearchParams();
   const tenant = params.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
   const range = (params.get("range") ?? "14d") as RangeId;
@@ -58,7 +58,7 @@ export const dynamic = 'force-dynamic';
 export default function Page() {
   return (
     <Suspense fallback={<div className="text-sm text-gray-500">Loading reliability data...</div>}>
-      <ReliabilityPage />
+      <ReliabilityPageContent />
     </Suspense>
   );
 }

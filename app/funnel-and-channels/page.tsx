@@ -10,7 +10,7 @@ import { TenantSwitcher } from "@components/TenantSwitcher";
 import { TimeRangePicker } from "@components/TimeRangePicker";
 import { KPITimeline } from "@components/KPITimeline";
 
-function TrendsPage() {
+function TrendsPageContent() {
   const params = useSearchParams();
   const tenant = params.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
   const range = (params.get("range") ?? "14d") as RangeId;
@@ -81,7 +81,7 @@ export const dynamic = 'force-dynamic';
 export default function Page() {
   return (
     <Suspense fallback={<div className="text-sm text-gray-500">Loading trends...</div>}>
-      <TrendsPage />
+      <TrendsPageContent />
     </Suspense>
   );
 }
