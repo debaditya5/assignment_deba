@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import { useUrlParams } from "@lib/useUrlParams";
 import { TENANTS } from "@data/tenants";
 import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
@@ -11,9 +11,9 @@ import { TimeRangePicker } from "@components/TimeRangePicker";
 import { KPITimeline } from "@components/KPITimeline";
 
 function TrendsPageContent() {
-  const params = useSearchParams();
-  const tenant = params.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
-  const range = (params.get("range") ?? "14d") as RangeId;
+  const { get } = useUrlParams();
+  const tenant = get("tenant") || (TENANTS[0]?.id || "alpha-health");
+  const range = (get("range") || "14d") as RangeId;
 
   const rows = useMemo(() => generateTenantData(tenant, range, 2), [tenant, range]);
   const filtered = useMemo(() => filterByTenantAndRange(rows, tenant, range), [rows, tenant, range]);
@@ -79,9 +79,5 @@ function TrendsPageContent() {
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div className="text-sm text-gray-500">Loading trends...</div>}>
-      <TrendsPageContent />
-    </Suspense>
-  );
+  return <TrendsPageContent />;
 }

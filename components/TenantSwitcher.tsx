@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
+import { useUrlParams } from "@lib/useUrlParams";
 import { TENANTS } from "@data/tenants";
 import { useAdmin } from "@lib/adminContext";
 
@@ -12,12 +12,11 @@ type Tenant = {
 };
 
 export function TenantSwitcher() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { get, set } = useUrlParams();
 
   const { isAdmin } = useAdmin();
   const defaultTenant = TENANTS[0] || { id: "alpha-health", name: "Alpha Health", accent: "alpha" };
-  const currentTenant = searchParams.get("tenant") ?? defaultTenant.id;
+  const currentTenant = get("tenant") || defaultTenant.id;
   
   // When admin is off, show the currently selected tenant (not just default)
   const currentTenantData = TENANTS.find(t => t.id === currentTenant) || defaultTenant;
@@ -25,9 +24,7 @@ export function TenantSwitcher() {
   const options = useMemo(() => isAdmin ? TENANTS : [currentTenantData], [isAdmin, currentTenantData]);
 
   function onChange(value: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tenant", value);
-    router.push(`?${params.toString()}`);
+    set("tenant", value);
   }
 
   if (!isAdmin) {

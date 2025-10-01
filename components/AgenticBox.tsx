@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useUrlParams } from "@lib/useUrlParams";
 import { GaugeCard } from "./GaugeCard";
 
 type GaugeRequest = { targetMs: number } | null;
 
 export function AgenticBox() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const tenant = params.get("tenant") ?? "alpha-health";
+  const { get, set } = useUrlParams();
+  const tenant = get("tenant") || "alpha-health";
   const [input, setInput] = useState("");
   const [message, setMessage] = useState<string>("");
   const [gauge, setGauge] = useState<GaugeRequest>(null);
@@ -20,9 +19,7 @@ export function AgenticBox() {
 
     // Canned: approvals dip insight -> set last 7d and hint at errors spike
     if (text.includes("approvals dip") || text.includes("approvals dip this week")) {
-      const q = new URLSearchParams(params.toString());
-      q.set("range", "7d");
-      router.push(`?${q.toString()}`);
+      set("range", "7d");
       setGauge(null);
       setMessage(
         `Observed a mild increase in error rates on Eligibility API for ${tenant} over the last 3 days, with weekend traffic drop contributing to lower approvals. Consider retry backoff and surfacing self-serve flows.`,

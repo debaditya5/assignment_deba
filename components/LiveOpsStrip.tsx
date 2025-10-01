@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useUrlParams } from "@lib/useUrlParams";
 
 type LiveOps = { activeAgents: number; queueDepth: number; successRate: number };
 
 export function LiveOpsStrip() {
-  const searchParams = useSearchParams();
-  const tenant = searchParams.get("tenant") ?? "alpha-health";
+  const { get } = useUrlParams();
+  const tenant = get("tenant") || "alpha-health";
   const baseline = tenant === "alpha-health" ? 97 : tenant === "beta-care" ? 95 : 93;
   const [data, setData] = useState<LiveOps>({ activeAgents: 12, queueDepth: 8, successRate: baseline });
 

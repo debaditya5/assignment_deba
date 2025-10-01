@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import { useUrlParams } from "@lib/useUrlParams";
 import { TENANTS } from "@data/tenants";
 import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
@@ -13,9 +13,9 @@ import { ErrorIndexBox } from "@components/ErrorIndexBox";
 import { LineCard } from "@components/LineCard";
 
 function ReliabilityPageContent() {
-  const params = useSearchParams();
-  const tenant = params.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
-  const range = (params.get("range") ?? "14d") as RangeId;
+  const { get } = useUrlParams();
+  const tenant = get("tenant") || (TENANTS[0]?.id || "alpha-health");
+  const range = (get("range") || "14d") as RangeId;
 
   const rows = useMemo(() => generateTenantData(tenant, range, 3), [tenant, range]);
   const filtered = useMemo(() => filterByTenantAndRange(rows, tenant, range), [rows, tenant, range]);
@@ -56,11 +56,7 @@ function ReliabilityPageContent() {
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div className="text-sm text-gray-500">Loading reliability data...</div>}>
-      <ReliabilityPageContent />
-    </Suspense>
-  );
+  return <ReliabilityPageContent />;
 }
 
 

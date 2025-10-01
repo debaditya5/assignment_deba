@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useUrlParams } from "@lib/useUrlParams";
 import { downloadAllTabsAsPdf } from "@lib/csv";
 import { TENANTS } from "@data/tenants";
 import { TenantSwitcher } from "./TenantSwitcher";
@@ -16,12 +17,12 @@ function titleForPath(pathname: string): string {
 
 export function HeaderBar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { get } = useUrlParams();
   const title = titleForPath(pathname ?? "/");
   const { isAdmin, setIsAdmin } = useAdmin();
   
   // Get current tenant
-  const tenantId = searchParams.get("tenant") ?? (TENANTS[0]?.id || "alpha-health");
+  const tenantId = get("tenant") || (TENANTS[0]?.id || "alpha-health");
   const currentTenant = TENANTS.find(t => t.id === tenantId) || TENANTS[0] || { id: "alpha-health", name: "Alpha Health", accent: "alpha" };
   
   const handleDownloadData = () => {
@@ -39,13 +40,13 @@ export function HeaderBar() {
       </Link>
       <div className="flex items-center gap-4">
         <nav className="flex items-center gap-4 text-sm">
-          <Link href={`/?${searchParams.toString()}`} className="hover:underline">
+          <Link href="/" className="hover:underline">
             Command Center
           </Link>
-          <Link href={`/funnel-and-channels?${searchParams.toString()}`} className="hover:underline">
+          <Link href="/funnel-and-channels" className="hover:underline">
             Trends
           </Link>
-          <Link href={`/reliability?${searchParams.toString()}`} className="hover:underline">
+          <Link href="/reliability" className="hover:underline">
             Reliability & Errors
           </Link>
         </nav>

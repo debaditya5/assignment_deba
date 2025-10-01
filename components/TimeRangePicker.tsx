@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useUrlParams } from "@lib/useUrlParams";
 
 const RANGES = [
   { id: "7d", label: "Last 7d", days: 7 },
@@ -9,14 +9,11 @@ const RANGES = [
 ];
 
 export function TimeRangePicker() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const current = searchParams.get("range") ?? "14d";
+  const { get, set } = useUrlParams();
+  const current = get("range") || "14d";
 
   function onChange(value: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("range", value);
-    router.push(`?${params.toString()}`);
+    set("range", value);
   }
 
   return (
