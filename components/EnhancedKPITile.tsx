@@ -31,7 +31,6 @@ export function EnhancedKPITile({
   value, 
   max = 100, 
   unit, 
-  color,
   help, 
   inverted = false, 
   showGauge = false,

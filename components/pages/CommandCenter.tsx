@@ -14,7 +14,7 @@ import { Tooltip } from "@components/atoms/Tooltip";
 import { TENANTS } from "@data/tenants";
 import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
-import { channelMix, dailyRequestsApprovals, filterByTenantAndRange, computeCategoryKpis, funnelCounts, calculateTrendData } from "@lib/aggregations";
+import { channelMix, dailyRequestsApprovals, filterByTenantAndRange, funnelCounts, calculateTrendData } from "@lib/aggregations";
 import { calculateTrueAverages } from "@lib/averageCalculator";
 import { getAllCleanKPIData } from "@lib/cleanKpiData";
 import { CleanKPITimeline } from "@components/CleanKPITimeline";

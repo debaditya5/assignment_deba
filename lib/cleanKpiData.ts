@@ -112,7 +112,7 @@ export function generateCleanKPIData(kpiType:
         break;
       }
         
-      case 'SuccessRate':
+      case 'SuccessRate': {
         // Success Rate: High and stable with minor fluctuations (90-98 range)
         const successBase = 94 + tenantModifier;
         const stability = pseudoRandom3 * 3;
@@ -121,6 +121,7 @@ export function generateCleanKPIData(kpiType:
         value = Math.round((successBase + stability + qualityDays + minorTrend) * 10) / 10;
         value = Math.max(91, Math.min(97, value));
         break;
+      }
         
       case 'NPS':
         // NPS: Lower than CSAT, gradual improvement (65-85 range)
