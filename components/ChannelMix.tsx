@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, CartesianGrid, LabelList } from "recharts";
-import { downloadChartAsPdf } from "@lib/csv";
+import { downloadChartAsPdf, toCsv, downloadCsv } from "@lib/csv";
 
 type Row = { channel: string; share: number; csat: number };
 
@@ -22,9 +22,20 @@ export function ChannelMix({ data }: { data: Row[] }) {
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-3">
-        <button className="btn btn-secondary" onClick={handleDownloadPdf}>
+      <div className="flex items-center justify-end gap-2 mb-2">
+        <button
+          className="btn btn-secondary"
+          onClick={handleDownloadPdf}
+          aria-label="Download Chart"
+        >
           Download Chart
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => downloadCsv("channel-mix.csv", toCsv(data))}
+          aria-label="Export CSV"
+        >
+          Export CSV
         </button>
       </div>
       <div ref={chartRef} className="h-64">

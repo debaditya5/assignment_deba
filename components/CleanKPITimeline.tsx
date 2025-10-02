@@ -1,44 +1,27 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ReferenceLine } from "recharts";
 import { toCsv, downloadCsv, downloadChartAsPdf } from "@lib/csv";
-import { RangeId } from "@lib/date";
-import { generateKPITimelineData } from "@lib/kpiData";
+import { CleanKPIData } from "@lib/cleanKpiData";
 
 type Props = {
   title: string;
+  data: CleanKPIData[];
   average: number;
   unit: string;
   color: string;
-  range: string;
-  trueAverage?: number; // The mathematically correct average from chart data
 };
 
-export function KPITimeline({ title, average, unit, color, range, trueAverage }: Props) {
+export function CleanKPITimeline({ title, data, average, unit, color }: Props) {
   const chartRef = useRef<HTMLDivElement>(null);
-  const chartData = useMemo(() => {
-    // Use the shared data generation utility to ensure consistency
-    return generateKPITimelineData(title, average, range as RangeId);
-  }, [title, average, range]);
 
   const formatValue = (value: number) => {
-    // For small ranges (like around 3), show 1 decimal place
-    // For larger ranges, show whole numbers
-    const dataValues = chartData.map(d => d.value);
-    const minDataValue = Math.min(...dataValues);
-    const maxDataValue = Math.max(...dataValues);
-    const range = maxDataValue - minDataValue;
-    
-    if (range < 10) {
-      return value.toFixed(1);
-    } else {
-      return Math.round(value).toString();
-    }
+    return value.toFixed(1);
   };
 
   const generateYAxisTicks = () => {
-    const dataValues = chartData.map(d => d.value);
+    const dataValues = data.map(d => d.value);
     const minDataValue = Math.min(...dataValues);
     const maxDataValue = Math.max(...dataValues);
     const padding = (maxDataValue - minDataValue) * 0.1;
@@ -70,16 +53,17 @@ export function KPITimeline({ title, average, unit, color, range, trueAverage }:
           </button>
           <button
             className="btn btn-secondary"
-            onClick={() => downloadCsv(`${title.toLowerCase().replace(/\s+/g, '-')}-timeline.csv`, toCsv(chartData))}
+            onClick={() => downloadCsv(`${title.toLowerCase().replace(/\s+/g, '-')}-timeline.csv`, toCsv(data))}
             aria-label="Export CSV"
           >
             Export CSV
           </button>
         </div>
       </div>
+
       <div ref={chartRef} style={{ height: 200 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
+          <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="date" 
@@ -92,7 +76,7 @@ export function KPITimeline({ title, average, unit, color, range, trueAverage }:
               tick={{ fontSize: 10 }}
               tickFormatter={(value) => formatValue(value)}
               domain={(() => {
-                const dataValues = chartData.map(d => d.value);
+                const dataValues = data.map(d => d.value);
                 const minDataValue = Math.min(...dataValues);
                 const maxDataValue = Math.max(...dataValues);
                 const padding = (maxDataValue - minDataValue) * 0.1;
@@ -112,19 +96,22 @@ export function KPITimeline({ title, average, unit, color, range, trueAverage }:
             <Legend 
               wrapperStyle={{ fontSize: 11 }}
             />
-            {/* Dotted red line showing correct average */}
+            
+            {/* RED DOTTED LINE - TRUE MATHEMATICAL AVERAGE */}
             <ReferenceLine 
-              y={trueAverage || average} 
+              y={average} 
               stroke="#ef4444" 
               strokeDasharray="5 5" 
               strokeWidth={2}
               label={{ 
-                value: `Avg: ${formatValue(trueAverage || average)}${trueAverage ? ' (TRUE)' : ' (BASE)'}`, 
+                value: `TRUE AVG: ${formatValue(average)}${unit}`, 
                 position: 'right', 
                 fontSize: 10, 
-                fill: '#ef4444' 
+                fill: '#ef4444',
+                fontWeight: 'bold'
               }}
             />
+            
             <Line 
               type="monotone" 
               dataKey="value" 

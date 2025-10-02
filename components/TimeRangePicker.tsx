@@ -10,7 +10,7 @@ const RANGES = [
 
 export function TimeRangePicker() {
   const { get, set } = useUrlParams();
-  const current = get("range") || "14d";
+  const current = get("range") || "7d";
 
   function onChange(value: string) {
     set("range", value);

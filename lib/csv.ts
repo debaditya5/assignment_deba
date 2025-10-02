@@ -85,7 +85,7 @@ export async function downloadAllTabsAsPdf(tenantName: string) {
     // Get current search parameters
     const currentUrl = new URL(window.location.href);
     const searchParams = currentUrl.searchParams;
-    const range = searchParams.get("range") || "14d";
+    const range = searchParams.get("range") || "7d";
     
     // Show progress message with higher z-index to avoid capture
     const progressDiv = document.createElement('div');
@@ -173,7 +173,7 @@ export async function downloadAllTabsAsPdf(tenantName: string) {
     const originalPaddingTop = (mainContent as HTMLElement).style.paddingTop;
     const originalPaddingBottom = (mainContent as HTMLElement).style.paddingBottom;
     const originalMarginBottom = (mainContent as HTMLElement).style.marginBottom;
-    (mainContent as HTMLElement).style.paddingTop = '100px';
+    (mainContent as HTMLElement).style.paddingTop = '150px';
     (mainContent as HTMLElement).style.paddingBottom = '0px';
     (mainContent as HTMLElement).style.marginBottom = '0px';
     

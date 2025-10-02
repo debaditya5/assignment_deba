@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className="min-h-screen bg-gray-50 text-gray-900">
         <AdminProvider>
-          <header className="border-b bg-white">
+          <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
             <HeaderBar />
           </header>
           <main className="w-full px-2 py-4">{children}</main>

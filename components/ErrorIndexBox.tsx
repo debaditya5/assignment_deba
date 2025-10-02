@@ -1,58 +1,62 @@
 "use client";
 
-type Info = { reason: string; solutions: string[] };
-const EXPLANATIONS: Record<string, Info> = {
-  "Eligibility API": {
-    reason: "The system couldn't check if someone is covered by their insurance. This usually happens when the insurance company's computer is slow or temporarily unavailable.",
+type Info = { solutions: string[] };
+const MITIGATION_METHODS: Record<string, Info> = {
+  "Timeout": {
     solutions: [
-      "Try checking again automatically if the first attempt fails",
-      "Make sure we're asking the insurance company in the right format",
-      "Have a backup plan when the insurance company's system is down",
+      "Advise patients to wait 5-10 minutes before resubmitting their requests",
+      "For urgent cases, call our provider hotline to process requests manually",
+      "Break complex multi-service requests into separate individual submissions",
+      "Schedule non-urgent benefit verifications during off-peak hours (early morning or late evening)",
     ],
   },
-  "Auth API": {
-    reason: "The system couldn't verify if someone is allowed to access their benefits. This might be because the request took too long or was formatted incorrectly.",
+  "Network": {
     solutions: [
-      "Double-check that all required information is provided correctly",
-      "Give the system more time to respond when it's busy",
-      "Remember previous successful requests to avoid asking the same question twice",
+      "Instruct patients to check their internet connection and refresh the page",
+      "Provide alternative access methods like your office phone or fax for urgent requests",
+      "Keep backup contact numbers for our provider services when online systems are down",
+      "Monitor our system status page and inform patients of known outages",
     ],
   },
-  "LLM Timeout": {
-    reason: "The AI assistant took too long to understand and respond to a question. This happens when the question is complex or the system is overloaded.",
+  "Auth": {
     solutions: [
-      "Break down complex questions into simpler parts",
-      "Give the AI more time for important questions, less time for simple ones",
-      "Remember common answers so we don't have to think about them every time",
+      "Help patients reset their passwords using the 'Forgot Password' option",
+      "Verify that patients are using their current member ID and personal information",
+      "For elderly patients, assist with clearing browser data or use incognito mode",
+      "Contact our provider support line to verify patient eligibility on their behalf",
     ],
   },
-  "Data Mapping": {
-    reason: "The system couldn't understand the information because different parts use different formats. It's like trying to read a document written in a different language.",
+  "Validation": {
     solutions: [
-      "Create a translation guide for common insurance companies",
-      "Test the translation with different insurance companies regularly",
-      "Show clear error messages when information doesn't match what we expect",
+      "Double-check patient information against their insurance cards for accuracy",
+      "Verify recent changes like name changes, address updates, or new dependents",
+      "Ensure dates of birth and member IDs are entered exactly as shown on insurance cards",
+      "Submit a member information update request if patient details have changed recently",
+    ],
+  },
+  "Server": {
+    solutions: [
+      "Inform patients that system issues are temporary and to try again in 15-30 minutes",
+      "Use our provider portal's offline forms for urgent prior authorization requests",
+      "Call our provider services line to process time-sensitive requests manually",
+      "Subscribe to our provider alerts to receive notifications about planned maintenance",
     ],
   },
 };
 
 export function ErrorIndexBox() {
   return (
-    <div className="card overflow-visible">
-      <div className="card-title">Error index</div>
-      <div className="mt-2 space-y-2 text-sm">
-        {Object.entries(EXPLANATIONS).map(([key, info]) => (
-          <div key={key} className="rounded-md border p-3 whitespace-normal break-words">
-            <div className="font-medium">{key}</div>
-            <div className="text-gray-600 leading-relaxed">{info.reason}</div>
-            <ul className="mt-2 list-disc pl-5 text-gray-700">
-              {info.solutions.map((s, i) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+    <div className="space-y-2 text-sm">
+      {Object.entries(MITIGATION_METHODS).map(([key, info]) => (
+        <div key={key} className="rounded-md border p-3 whitespace-normal break-words">
+          <div className="font-medium">{key}</div>
+          <ul className="mt-2 list-disc pl-5 text-gray-700">
+            {info.solutions.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }
