@@ -154,24 +154,24 @@ export function calculateTrueAverages(tenant: string, range: RangeId): {
   
   return {
     kpiAverages: {
-      csat: timelineAverages[0],
-      nps: timelineAverages[1],
-      firstContactResolution: timelineAverages[2],
-      abandonRate: timelineAverages[3],
-      approvalRate: timelineAverages[4],
-      coverageConfirmationRate: timelineAverages[5],
-      authorizationConversion: timelineAverages[6],
-      costToServe: timelineAverages[7],
-      queueDepth: timelineAverages[8],
-      averageHandlingTimeMs: timelineAverages[9],
-      agentUtilization: timelineAverages[10],
-      selfServeDeflection: timelineAverages[11],
-      latencyP50Ms: timelineAverages[12],
-      latencyP95Ms: timelineAverages[13],
-      errorRate: timelineAverages[14],
-      successRate: timelineAverages[15],
-      retryRate: timelineAverages[16],
-      timeoutRate: timelineAverages[17]
+      csat: timelineAverages[0] || 0,
+      nps: timelineAverages[1] || 0,
+      firstContactResolution: timelineAverages[2] || 0,
+      abandonRate: timelineAverages[3] || 0,
+      approvalRate: timelineAverages[4] || 0,
+      coverageConfirmationRate: timelineAverages[5] || 0,
+      authorizationConversion: timelineAverages[6] || 0,
+      costToServe: timelineAverages[7] || 0,
+      queueDepth: timelineAverages[8] || 0,
+      averageHandlingTimeMs: timelineAverages[9] || 0,
+      agentUtilization: timelineAverages[10] || 0,
+      selfServeDeflection: timelineAverages[11] || 0,
+      latencyP50Ms: timelineAverages[12] || 0,
+      latencyP95Ms: timelineAverages[13] || 0,
+      errorRate: timelineAverages[14] || 0,
+      successRate: timelineAverages[15] || 0,
+      retryRate: timelineAverages[16] || 0,
+      timeoutRate: timelineAverages[17] || 0
     },
     chartAverages: {
       requestsVsApprovals: {

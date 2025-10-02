@@ -2,14 +2,11 @@
 
 import { useMemo } from "react";
 import { useUrlParams } from "@lib/useUrlParams";
-import { TenantSwitcher } from "@components/TenantSwitcher";
-import { TimeRangePicker } from "@components/TimeRangePicker";
 import { LineCard } from "@components/LineCard";
 import { LatencyCard } from "@components/LatencyCard";
 import { EnhancedKPITile } from "@components/EnhancedKPITile";
 import { CollapsibleKPISection } from "@components/CollapsibleKPISection";
 import { KPIGrid } from "@components/KPIGrid";
-import { KPITimeline } from "@components/KPITimeline";
 import { CollapsibleProvider } from "@lib/collapsibleContext";
 import { FunnelChart } from "@components/FunnelChart";
 import { ChannelMix } from "@components/ChannelMix";
@@ -17,8 +14,7 @@ import { Tooltip } from "@components/atoms/Tooltip";
 import { TENANTS } from "@data/tenants";
 import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
-import { channelMix, dailyLatency, dailyRequestsApprovals, filterByTenantAndRange, computeCategoryKpis, funnelCounts, calculateTrendData } from "@lib/aggregations";
-import { generateKPITimelineData } from "@lib/kpiData";
+import { channelMix, dailyRequestsApprovals, filterByTenantAndRange, computeCategoryKpis, funnelCounts, calculateTrendData } from "@lib/aggregations";
 import { calculateTrueAverages } from "@lib/averageCalculator";
 import { getAllCleanKPIData } from "@lib/cleanKpiData";
 import { CleanKPITimeline } from "@components/CleanKPITimeline";
@@ -38,7 +34,6 @@ function CommandCenterContent() {
   const rows = useMemo(() => generateTenantData(tenant, range, 1), [tenant, range]);
   const filtered = useMemo(() => filterByTenantAndRange(rows, tenant, range), [rows, tenant, range]);
 
-  const categories = useMemo(() => computeCategoryKpis(filtered), [filtered]);
   const reqVsApp = useMemo(() => dailyRequestsApprovals(filtered, range), [filtered, range]);
   
   // Calculate true averages from actual chart data

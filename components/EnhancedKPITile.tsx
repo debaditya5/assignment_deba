@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "./atoms/Tooltip";
-import { KPITimeline } from "./KPITimeline";
 
 type Props = {
   title: string;
@@ -21,13 +19,7 @@ type Props = {
   };
   onClick?: () => void;
   onDoubleClick?: () => void;
-  onChartToggle?: (tileData: {
-    title: string;
-    average: number;
-    unit: string;
-    color: string;
-    range: string;
-  }) => void;
+  onChartToggle?: () => void;
   isChartExpanded?: boolean;
   navigateTo?: string; // URL to navigate to on click
   disableClick?: boolean; // Disable click functionality
@@ -55,7 +47,7 @@ export function EnhancedKPITile({
 }: Props) {
   const router = useRouter();
   
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClick = () => {
     if (disableClick) return;
     
     if (navigateTo) {
@@ -83,13 +75,7 @@ export function EnhancedKPITile({
     } else {
       // Normal behavior for tiles without double-click
       if (onChartToggle) {
-        onChartToggle({
-          title,
-          average: value,
-          unit,
-          color,
-          range
-        });
+        onChartToggle();
       }
       onClick?.();
     }
@@ -100,7 +86,6 @@ export function EnhancedKPITile({
     
     const { changePercent } = trendData;
     const isUp = changePercent > 0;
-    const isDown = changePercent < 0;
     const rangeDays = range === "7d" ? "7 days" : range === "14d" ? "14 days" : "30 days";
     
     if (Math.abs(changePercent) < 0.1) {

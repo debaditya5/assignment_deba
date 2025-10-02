@@ -79,7 +79,7 @@ export function LineCard({ title, data, colorA = "#2563eb", colorB = "#16a34a", 
                 strokeDasharray="5 5" 
                 label={{ 
                   value: `Avg Approval Rate: ${approvalRate}%`, 
-                  position: "topRight",
+                  position: "top",
                   style: { fontWeight: "bold", fill: "#1f2937", zIndex: 1000 }
                 }}
               />

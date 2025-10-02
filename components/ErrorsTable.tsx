@@ -14,12 +14,6 @@ const ERROR_DEFINITIONS: Record<string, string> = {
 };
 
 export function ErrorsTable({ data }: { data: Row[] }) {
-  const formatChannelName = (channel: string) => {
-    return channel
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
 
   return (
     <div className="overflow-x-auto">

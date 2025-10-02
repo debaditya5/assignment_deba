@@ -5,10 +5,8 @@ import { useUrlParams } from "@lib/useUrlParams";
 import { TENANTS } from "@data/tenants";
 import { RangeId } from "@lib/date";
 import { generateTenantData } from "@lib/mock";
-import { errorTrend, filterByTenantAndRange, topErrors, calculateSystemStatus, hourlyErrorTrend, hourlyErrorTrendWithUptime, top24hErrors } from "@lib/aggregations";
+import { filterByTenantAndRange, hourlyErrorTrendWithUptime, top24hErrors } from "@lib/aggregations";
 import { getAllCleanKPIData } from "@lib/cleanKpiData";
-import { TenantSwitcher } from "@components/TenantSwitcher";
-import { TimeRangePicker } from "@components/TimeRangePicker";
 import { StatusBadge } from "@components/StatusBadge";
 import { UserGuidanceBox } from "@components/UserGuidanceBox";
 import { TechnicalDetailsPanel } from "@components/TechnicalDetailsPanel";
@@ -100,7 +98,6 @@ function ReliabilityPageContent() {
     return hourlyErrorTrendWithUptime(filtered, maxErrors);
   }, [filtered, systemStatus.uptime]);
   const top = useMemo(() => top24hErrors(hourlyErrors), [hourlyErrors]); // Use same hourly data for consistency
-  const trend = useMemo(() => errorTrend(filtered, range).map((r) => ({ date: r.date, failedRequests: r.errors })), [filtered, range]);
 
   return (
     <div className="space-y-6">

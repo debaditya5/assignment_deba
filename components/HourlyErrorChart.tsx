@@ -72,7 +72,7 @@ export function HourlyErrorChart({ title, data, exportName, heightClass = "h-96"
             />
             <RTooltip 
               labelFormatter={(label) => `Error Type: ${hourlyData.find(d => d.time === label)?.primaryErrorType || 'Unknown'}`}
-              formatter={(value: number, name: string, props: any) => [
+              formatter={(value: number) => [
                 `${value} errors`, 
                 'Count'
               ]}

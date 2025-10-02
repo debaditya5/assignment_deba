@@ -85,7 +85,7 @@ export function KPIGrid({ children, columns = "grid-cols-1 md:grid-cols-2 lg:gri
     return key ? kpiAverages[key] : undefined;
   };
 
-  const handleTileClick = (tileData: {
+  const handleTileClick = (tileData?: {
     title: string;
     average: number;
     unit: string;
@@ -94,6 +94,8 @@ export function KPIGrid({ children, columns = "grid-cols-1 md:grid-cols-2 lg:gri
   }) => {
     // Chart hiding is now handled by EnhancedKPITile.handleClick
     // Just handle the KPIGrid chart expansion/collapse
+    if (!tileData) return;
+    
     if (expandedChart?.title === tileData.title) {
       setExpandedChart(null);
     } else {
@@ -104,7 +106,13 @@ export function KPIGrid({ children, columns = "grid-cols-1 md:grid-cols-2 lg:gri
   const enhancedChildren = children.map((child, index) => {
     return cloneElement(child, {
       key: index,
-      onChartToggle: (tileData: any) => handleTileClick(tileData),
+      onChartToggle: () => handleTileClick({
+        title: child.props.title,
+        average: child.props.value,
+        unit: child.props.unit,
+        color: child.props.color || "#3b82f6",
+        range: child.props.range || "7d"
+      }),
       isChartExpanded: expandedChart?.title === child.props.title
     });
   });

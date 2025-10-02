@@ -90,7 +90,7 @@ export function generateCleanKPIData(kpiType:
     const pseudoRandom3 = Math.sin(seed + i * 300) * 0.3;
     
     switch (kpiType) {
-      case 'CSAT':
+      case 'CSAT': {
         // CSAT: Gradual improvement trend with some volatility (75-90 range)
         const csatBase = 82 + tenantModifier;
         const improvementTrend = (i / days) * 8;
@@ -99,8 +99,9 @@ export function generateCleanKPIData(kpiType:
         value = Math.round((csatBase + improvementTrend + volatility + weekendBoost) * 10) / 10;
         value = Math.max(75, Math.min(92, value));
         break;
+      }
         
-      case 'ApprovalRate':
+      case 'ApprovalRate': {
         // Approval Rate: Declining trend with periodic recoveries (70-90 range)
         const approvalBase = 85 + tenantModifier;
         const declineTrend = -(i / days) * 10;
@@ -109,6 +110,7 @@ export function generateCleanKPIData(kpiType:
         value = Math.round((approvalBase + declineTrend + periodicRecovery + noise) * 10) / 10;
         value = Math.max(72, Math.min(90, value));
         break;
+      }
         
       case 'SuccessRate':
         // Success Rate: High and stable with minor fluctuations (90-98 range)
