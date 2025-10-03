@@ -36,8 +36,20 @@ export function generateTenantData(tenant: string, range: RangeId, seed = 1): Ev
       if (tenant === "beta-care" && i % 13 === 0) duration_ms += 700; // mild latency spike pattern
       if (tenant === "gamma-health" && i % 17 === 0) duration_ms += 1200; // another pattern
       const error = status === "rejected" && rng() > 0.4 ? ERROR_TYPES[Math.floor(rng() * 4)] : undefined;
-      const csatBase = (channel === "mobile" ? 80 : channel === "call_center" ? 70 : 75) + csatBias;
-      const csat = Math.max(50, Math.min(95, Math.round(csatBase + (0.5 - rng()) * 8)));
+      // Calculate target CSAT based on clean KPI data to match gauge
+      const targetCSAT = 82 + (tenant === 'alpha-health' ? 3 : tenant === 'beta-care' ? -2 : -1);
+      
+      // Channel-specific CSAT targets to achieve weighted average = targetCSAT
+      // Mobile: 40% weight, Web: 35% weight, Call Center: 25% weight
+      const channelTargets = {
+        'mobile': targetCSAT + 4,     // Higher CSAT for mobile (88 for alpha)
+        'web': targetCSAT + 1,        // Slightly higher for web (85 for alpha)  
+        'call_center': targetCSAT - 6 // Lower for call center (78 for alpha)
+      };
+      
+      const channelTarget = channelTargets[channel as keyof typeof channelTargets] || targetCSAT;
+      const csatBase = channelTarget + csatBias;
+      const csat = Math.max(50, Math.min(95, Math.round(csatBase + (0.5 - rng()) * 4)));
       const aht_ms = channel === "call_center" ? Math.round(300000 + rng() * 120000) : Math.round(120000 + rng() * 60000);
       rows.push({
         tenant_id: tenant,
