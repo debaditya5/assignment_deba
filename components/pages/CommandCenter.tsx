@@ -84,7 +84,7 @@ function CommandCenterContent() {
             max={100} 
             unit="%" 
             color="#3b82f6" 
-            help="Out of everything started, how many ended in 'approved'."
+            help="How many of those requests ended with coverage being approved. A lower approval rate means many requests return as denied — not a technical failure, but a decision outcome."
             showGauge={true}
             range={range}
             trendData={calculateTrendData(cleanKPIData.approvalRate.average, range)}
@@ -96,7 +96,7 @@ function CommandCenterContent() {
             max={100} 
             unit="%" 
             color="#10b981" 
-            help="Out of decided requests, percent approved. Success + error = 100%."
+            help="Measures technical success of the lookup process i.e. if the system return a valid result without errors?. A high success rate means the system is working reliably: the request goes through, and a result is returned. BUT — that result could be Approved or Denied."
             showGauge={true}
             range={range}
             trendData={calculateTrendData(cleanKPIData.successRate.average, range)}
