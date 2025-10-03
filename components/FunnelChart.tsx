@@ -13,6 +13,10 @@ export function FunnelChart({ data }: { data: StageRow[] }) {
     downloadChartAsPdf(chartRef, "funnel-chart.pdf");
   };
 
+  const formatStageName = (stage: string) => {
+    return stage.charAt(0).toUpperCase() + stage.slice(1);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-end gap-2 mb-2">
@@ -35,7 +39,7 @@ export function FunnelChart({ data }: { data: StageRow[] }) {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="4 4" />
-            <XAxis dataKey="stage" />
+            <XAxis dataKey="stage" tickFormatter={formatStageName} />
             <YAxis />
             <Tooltip />
             <Bar dataKey="count" name="Count" fill="#0ea5e9">
